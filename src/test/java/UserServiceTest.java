@@ -5,13 +5,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
+import static org.junit.Assert.*;
 
-public class UserServiceTest {
+public class   UserServiceTest {
     private final UserService userService = new UserServiceImpl();
 
     private final String testName = "Nick";
     private final String testLastName = "Martin";
-    private final byte testAge = 15;
+    private final Byte testAge = 15;
 
 
     @Test
@@ -20,7 +21,7 @@ public class UserServiceTest {
             userService.dropUsersTable();
             userService.dropUsersTable();
         } catch (Exception e) {
-            Assert.fail("An exception occurred while testing drop table\n" + e);
+            fail("dropUsersTable() threw an exception: " + e.getMessage());
         }
     }
 
@@ -30,73 +31,48 @@ public class UserServiceTest {
             userService.dropUsersTable();
             userService.createUsersTable();
         } catch (Exception e) {
-            Assert.fail("An exception occurred while testing to create a user table\n" + e.getMessage());
+            fail("createUsersTable() threw an exception: " + e.getMessage());
         }
     }
 
     @Test
     public void saveUser() {
-        try {
             userService.dropUsersTable();
             userService.createUsersTable();
             userService.saveUser(testName, testLastName, testAge);
 
-            User user = userService.getAllUsers().get(0);
+            User savedUser = userService.getAllUsers().get(0);
 
-            if (!testName.equals(user.getName())
-                    || !testLastName.equals(user.getLastName())
-                    || testAge != user.getAge()
-            ) {
-                Assert.fail("User was incorrectly added to the database");
-            }
-
-        } catch (Exception e) {
-            Assert.fail("An exception occurred while testing user save\n" + e);
-        }
+            assertEquals(testName, savedUser.getName());
+            assertEquals(testLastName, savedUser.getLastName());
+            assertEquals(testAge, savedUser.getAge());
     }
 
     @Test
     public void removeUserById() {
-        try {
-            userService.dropUsersTable();
-            userService.createUsersTable();
-            userService.saveUser(testName, testLastName, testAge);
-            userService.removeUserById(1L);
-        } catch (Exception e) {
-            Assert.fail("An exception occurred while testing deleting a user by id\n" + e);
-        }
+        userService.dropUsersTable();
+        userService.createUsersTable();
+        userService.saveUser(testName, testLastName, testAge);
+        userService.removeUserById(1L);
+        assertTrue(userService.getAllUsers().isEmpty());
     }
 
     @Test
     public void getAllUsers() {
-        try {
-            userService.dropUsersTable();
-            userService.createUsersTable();
-            userService.saveUser(testName, testLastName, testAge);
-            List<User> userList = userService.getAllUsers();
-
-            if (userList.size() != 1) {
-                Assert.fail("Check if the save/delete or create table method works correctly");
-            }
-        } catch (Exception e) {
-            Assert.fail("An exception occurred while trying to get all users from the database\n" + e);
-        }
+        userService.dropUsersTable();
+        userService.createUsersTable();
+        userService.saveUser(testName, testLastName, testAge);
+        assertEquals(1, userService.getAllUsers().size());
     }
 
     @Test
     public void cleanUsersTable() {
-        try {
-            userService.dropUsersTable();
-            userService.createUsersTable();
-            userService.saveUser(testName, testLastName, testAge);
-            userService.cleanUsersTable();
+        userService.dropUsersTable();
+        userService.createUsersTable();
+        userService.saveUser(testName, testLastName, testAge);
+        userService.cleanUsersTable();
+        assertTrue(userService.getAllUsers().isEmpty());
 
-            if (userService.getAllUsers().size() != 0) {
-                Assert.fail("The method of clearing the user table is implemented incorrectly");
-            }
-        } catch (Exception e) {
-            Assert.fail("An exception occurred while testing clearing the users table\n" + e);
-        }
     }
 
 }
