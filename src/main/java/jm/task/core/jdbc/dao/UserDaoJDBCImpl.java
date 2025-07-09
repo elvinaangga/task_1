@@ -11,8 +11,8 @@ public class UserDaoJDBCImpl implements UserDao {
     private final Connection connection = Util.getConnection();
 
     public UserDaoJDBCImpl() {
-
     }
+
     @Override
     public void createUsersTable() {
         String sql = "CREATE TABLE IF NOT EXISTS users (" +
@@ -23,7 +23,6 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Statement statement = connection.createStatement()) {
             statement.execute(sql);
         } catch (SQLException ignored) {}
-
     }
 
     @Override
@@ -31,7 +30,6 @@ public class UserDaoJDBCImpl implements UserDao {
         try (Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE IF EXISTS users");
         } catch (SQLException ignored) {}
-
     }
 
     @Override
@@ -45,7 +43,6 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -84,6 +81,5 @@ public class UserDaoJDBCImpl implements UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }
