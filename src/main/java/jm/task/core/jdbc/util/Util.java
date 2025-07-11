@@ -11,7 +11,7 @@ public class Util {
     // set up a database connection
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/example_schema";
     private static final String JDBC_USER = "root";
-    private static final String JDBC_PASSWORD = "Hong30042002@";
+    private static final String JDBC_PASSWORD = "kakashi.hatake";
 
     private static final SessionFactory sessionFactory = buildSessionFactory();
 
